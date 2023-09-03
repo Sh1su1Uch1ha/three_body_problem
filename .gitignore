@@ -1,0 +1,35 @@
+# Fortran object files and modules
+*.o
+*.mod
+
+# Fortran executable files
+three_body_leapfrog
+
+# Python Bytecode
+__pycache__/
+*.py[cod]
+
+# Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual Environment
+venv/
+.env/
+
+# Conda environment files
+environment.yml
+
+# IDE-specific files (e.g., for VSCode)
+.vscode/
+
+# macOS-specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Other files and directories to be ignored
+*.swp
+*.swo
+*.bak
+*.log
+*.out
