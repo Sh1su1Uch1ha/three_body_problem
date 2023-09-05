@@ -1,16 +1,16 @@
       PROGRAM THREE_BODY_LEAPFROG
       IMPLICIT NONE
-      DOUBLE PRECISION G, DT, T_FINAL
-      DOUBLE PRECISION X1, Y1, Z1, VX1, VY1, VZ1, AX1, AY1, AZ1
-      DOUBLE PRECISION X2, Y2, Z2, VX2, VY2, VZ2, AX2, AY2, AZ2
-      DOUBLE PRECISION X3, Y3, Z3, VX3, VY3, VZ3, AX3, AY3, AZ3
-      DOUBLE PRECISION M1, M2, M3
+      DOUBLE PRECISION DT, T_FINAL
+      DOUBLE PRECISION R(3,3), V(3,3), A(3,3)
+      DOUBLE PRECISION PHI
+      DOUBLE PRECISION EKIN, EPOT, ETOT
+      
       INTEGER N_STEPS, I
 
 C Initialize gravitational constant and time step
       G = 6.67430D-11
       DT = 3600.D0
-      T_FINAL = 3600.D0 * 24.D0
+      T_FINAL = 3600.D0 * 24.D1
       N_STEPS = NINT(T_FINAL / DT)
 
 C Take initial positions and velocities as input

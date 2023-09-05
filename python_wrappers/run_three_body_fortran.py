@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 import os
 
 # Step 1: Compile the Fortran code
-fortran_file_path = "numerical_solvers/three_body_leapfrog.f"
-executable_path = "numerical_solvers/three_body_leapfrog"
-output_file_path = "numerical_solvers/leapfrog_output.txt"
+fortran_file_path = "numerical_solvers_fortran/three_body_leapfrog.f"
+executable_path = "numerical_solvers_fortran/three_body_leapfrog"
+output_file_path = "numerical_solvers_fortran/leapfrog_output.txt"
 
 subprocess.run(["gfortran", "-o", executable_path, fortran_file_path])
 
@@ -18,7 +18,7 @@ initial_values = [
 ]
 
 # Change the current working directory
-os.chdir("numerical_solvers")
+os.chdir("numerical_solvers_fortran")
 
 # Run the executable with inputs
 process = subprocess.Popen(["./three_body_leapfrog"], stdin=subprocess.PIPE, text=True)
