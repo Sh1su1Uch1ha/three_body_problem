@@ -33,3 +33,7 @@ environment.yml
 *.bak
 *.log
 *.out
+
+# Numerical solvers txt
+numeric_solvers_fortran/*.txt
+numeric_solvers_cpp/*.txt
