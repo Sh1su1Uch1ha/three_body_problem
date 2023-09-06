@@ -1,6 +1,8 @@
 #include "three_body_euler.hpp"
 #include <iostream>
 #include <cmath>
+#include <fstream>
+
 using namespace std;
 
 
@@ -31,11 +33,33 @@ void eulerMethod() {
 
     setInitialConditions(r, v, pi);
 
+
+    // Opening the file for writing
+    ofstream outFile("../data/euler_output.txt");
+    if (!outFile) {
+        cerr << "Unable to open file for writing!" << endl;
+        return;
+    }
+    // Write the headers for our data columns
+    outFile << "Time\tX1\tY1\tZ1\tVX1\tVY1\tVZ1\t"
+            << "X2\tY2\tZ2\tVX2\tVY2\tVZ2\t"
+            << "X3\tY3\tZ3\tVX3\tVY3\tVZ3\n";
+
     for (double t = 0; t < t_final; t += dt) {
         calculateAccelerations(r, a);
         eulerStep(r, v, a, dt);
+
+        // Write the current state to the file
+        outFile << t << '\t';
+        for (int i = 0; i < 3; i++) {
+            outFile << r[i][0] << '\t' << r[i][1] << '\t' << r[i][2] << '\t';
+            outFile << v[i][0] << '\t' << v[i][1] << '\t' << v[i][2] << '\t';
+        }
+        outFile << '\n';  // End of the line for this timestep
     }
 
+    // Close the file after writing
+    outFile.close();
 }
 
 
