@@ -23,7 +23,7 @@ void eulerMethod(const char* filePath) {
     cout << "Enter final time: ";
     cin >> t_final;
 
-    setInitialConditions(r, v, pi);
+    setInitialConditions(r, v, a, pi, m);
 
 
     // Opening the file for writing
@@ -38,8 +38,8 @@ void eulerMethod(const char* filePath) {
         << "X3\tY3\tZ3\n";
 
     for (double t = 0; t < t_final; t += dt) {
-        calculateAccelerations(r, a, m);
         eulerStep(r, v, a, dt);
+        calculateAccelerations(r, a, m);
 
         // Write the current state to the file
         outFile << t << '\t';
@@ -56,36 +56,23 @@ void eulerMethod(const char* filePath) {
 
 //sets the initial conditions (locations) of the bodies
 
-// void setInitialConditions(double (&r)[3][3], double (&v)[3][3], const double &pi) { 
-//     for (int i = 0; i < 3; i++) {
-//         double phi = 2 * pi * i / 3;
-//         r[i][0] = cos(phi);
-//         r[i][1] = sin(phi);
-//         r[i][2] = 0;
-//     }
-//     for (int i = 0; i < 3; i++) {
-//         v[i][0] = 0;
-//         v[i][1] = 0;
-//         v[i][2] = 0;
-//     }
-// }
-
-void setInitialConditions(double (&r)[3][3], double (&v)[3][3], const double &pi) {
-    // Create a random number generator
-    std::default_random_engine generator;
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
-
+void setInitialConditions(double (&r)[3][3], double (&v)[3][3], double (&a)[3][3], const double &pi, const double &m) { 
     for (int i = 0; i < 3; i++) {
-        r[i][0] = distribution(generator);  // Random x coordinate between 0 and 1
-        r[i][1] = distribution(generator);  // Random y coordinate between 0 and 1
-        r[i][2] = 0;  // Z coordinate remains 0
-
-        // If you want to randomize velocities as well, you can do so here
-        v[i][0] = distribution(generator);
-        v[i][1] = distribution(generator);
+        double phi = 2 * pi * i / 3;
+        r[i][0] = cos(phi);
+        r[i][1] = sin(phi);
+        r[i][2] = 0;
+    }
+    calculateAccelerations(r, a, m);
+    double v_mag = sqrt(-a[0][0]);
+    for (int i = 0; i < 3; i++) {
+        double phi = 2 * pi * i / 3;
+        v[i][0] = - v_mag * sin(phi);
+        v[i][1] = v_mag * cos(phi);
         v[i][2] = 0;
     }
 }
+
 
 // performs a single euler step
 void eulerStep(double (&r)[3][3], double (&v)[3][3], const double (&a)[3][3], double dt) {
@@ -109,7 +96,7 @@ void calculateAccelerations(const double (&r)[3][3], double (&a)[3][3], const do
                 }
                 double r_ij_mag = sqrt(r_ij[0] * r_ij[0] + r_ij[1] * r_ij[1] + r_ij[2] * r_ij[2]);
                 for(int k = 0; k < 3; k++){
-                    a[i][k] += -1 * m * r_ij[k] / (r_ij_mag * r_ij_mag * r_ij_mag);
+                    a[i][k] -= m * r_ij[k] / (r_ij_mag * r_ij_mag * r_ij_mag);
                 }
             }
         }
