@@ -1,4 +1,4 @@
-#include "three_body_euler.hpp"
+#include "three_body_leapfrog.hpp"
 #include "three_body_calculations.hpp"
 #include <iostream>
 #include <cmath>
@@ -7,10 +7,7 @@
 
 using namespace std;
 
-// implements entire euler method: 
-// sets initial conditions, calculates accelerations,
-// performs euler step, and writes to file
-void eulerMethod(const char* filePath) {
+void leapfrogMethod(const char* filePath) {
 
     double r[3][3], v[3][3], a[3][3];
     // first entry is which body, second is which dimension
@@ -39,8 +36,30 @@ void eulerMethod(const char* filePath) {
         << "X3\tY3\tZ3\n";
 
     for (double t = 0; t < t_final; t += dt) {
-        eulerStep(r, v, a, dt);
+        // Leapfrog step:
+        // 1. Update velocities by half a timestep
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                v[i][j] += 0.5 * dt * a[i][j];
+            }
+        }
+
+        // 2. Update positions by a full timestep using the half-updated velocities
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                r[i][j] += dt * v[i][j];
+            }
+        }
+
+        // 3. Calculate new accelerations based on updated positions
         calculateAccelerations(r, a, m);
+
+        // 4. Complete the velocity update with the second half of the timestep
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                v[i][j] += 0.5 * dt * a[i][j];
+            }
+        }
 
         // Write the current state to the file
         outFile << t << '\t';
@@ -53,15 +72,3 @@ void eulerMethod(const char* filePath) {
     // Close the file after writing
     outFile.close();
 }
-
-
-// performs a single euler step
-void eulerStep(double (&r)[3][3], double (&v)[3][3], const double (&a)[3][3], double dt) {
-    for (int i = 0; i < 3; i++){
-        for (int j = 0; j < 3; j++){
-            r[i][j] += v[i][j] * dt;
-            v[i][j] += a[i][j] * dt;
-        }
-    }
-}
-

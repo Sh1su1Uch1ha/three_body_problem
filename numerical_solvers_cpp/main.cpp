@@ -1,5 +1,6 @@
 #include <iostream>
 #include "three_body_euler.hpp" 
+#include "three_body_leapfrog.hpp" 
 
 using namespace std;
 
@@ -15,6 +16,7 @@ int main(int argc, char* argv[]) {
 
     cout << "Choose a numerical method for the three-body simulation:" << endl;
     cout << "1. Euler Method" << endl;
+    cout << "2. Leapfrog Method" << endl;
     cout << "Enter your choice (number): ";
     cin >> choice;
 
@@ -22,7 +24,9 @@ int main(int argc, char* argv[]) {
         case 1:
             eulerMethod(filePath);
             break;
-        // Add more cases for other methods here
+        case 2:
+            leapfrogMethod(filePath);
+            break;
         default:
             cout << "Invalid choice." << endl;
             break;

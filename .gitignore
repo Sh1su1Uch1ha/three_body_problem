@@ -1,3 +1,7 @@
+three_body_data/*
+!three_body_data/.gitkeep
+
+
 # Fortran object files and modules
 *.o
 *.mod

@@ -4,17 +4,30 @@ import matplotlib.pyplot as plt
 import os
 
 # Step 1: Compile the C++ code
-cpp_files_path = "numerical_solvers_cpp/"
+cpp_files_path = "numerical_solvers_cpp"
 executable_path = "numerical_solvers_cpp/main_executable"
 output_file_path = "three_body_data/euler_output.txt"
 file_path = "three_body_data/euler_output.txt"
 
-subprocess.run(["g++", "-o", executable_path, cpp_files_path + "main.cpp", cpp_files_path + "three_body_euler.cpp"])
+# List all .cpp files in the numeric_solvers directory
+cpp_files = [f for f in os.listdir(cpp_files_path) if f.endswith(".cpp")]
+
+# Define the full paths
+cpp_paths = [os.path.join(cpp_files_path, f) for f in cpp_files]
+
+# Define the output executable path
+executable_path = os.path.join(cpp_files_path, "three_body_solver")
+
+# Construct the g++ compilation command
+command = ["g++", "-o", executable_path] + cpp_paths
+
+# Run the command
+subprocess.run(command)
 
 # Step 2: Run the C++ program
 initial_values = [
-    "1", # Euler
-    "0.01",  # dt
+    "2", # Euler
+    "0.001",  # dt
     "10"     # t_final
 ]
 
