@@ -28,7 +28,7 @@ subprocess.run(command)
 initial_values = [
     "2", # Euler
     "0.01",  # dt
-    "20"     # t_final
+    "10"     # t_final
 ]
 
 process = subprocess.Popen([executable_path, file_path], stdin=subprocess.PIPE, text=True)

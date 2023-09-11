@@ -23,7 +23,6 @@ void leapfrogMethod(const char* filePath) {
 
     setInitialConditions(r, v, a, pi, m);
 
-
     // Opening the file for writing
     ofstream outFile(filePath);
     if (!outFile) {
